@@ -14,3 +14,10 @@ function foo() {
 someAsyncOperation();
 foo();
 console.log('done');
+
+/**
+"foo" (from the call to foo())
+"done" (from the console.log('done'); immediately after calling foo())
+"Read Error" or "Data: " + data (from the callback of fs.readFile in someAsyncOperation(), 
+executed after the file read operation completes)
+ */

@@ -1,2 +1,12 @@
 - Explain the order of execution in terms of the event loop for eventloop/immediate.js.
 - Will the order of execution change if timeout is changed to 0? Why or why not?
+
+File read callback, including the 10ms blocking loop.
+The setImmediate callback runs next because it's scheduled to run immediately after the I/O callbacks have finished, but before any new timers that have expired get processed. However, this can depend on the timing of the event loop phases and when the setTimeout was actually able to schedule its callback relative to the setImmediate.
+The setTimeout callback runs, logging the delay since it was scheduled.
+
+Because both setTimeout with 0 delay and setImmediate aim to execute as soon as the current phase of the event loop completes,
+and given that they are scheduled within an I/O callback, 
+the order of their execution might still favor setImmediate. 
+The execution order between these might be influenced by subtle timing differences in how Node.js processes 
+the event loop's phases but typically, setImmediate and setTimeout(,0) scheduled within the same I/O cycle could run in an unpredictable order.
